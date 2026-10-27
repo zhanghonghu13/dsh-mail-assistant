@@ -1,10 +1,12 @@
 // Mail Assistant — browser half.
+// The module id MUST equal the installed package name (see package.json), so
+// this file ships with the same identity as the npm package.
 // Registers the sidebar glyph, the main panel page, and the Settings section
 // that stores the mailbox address (row config) and the dedicated password
 // (Host credential store).
 
 window.__ModuleLoader__.load({
-  id: '@local/dsh-mail-assistant',
+  id: '@zhanghonghu13/dsh-mail-assistant',
   factory(require) {
     const React = require('react');
     const h = React.createElement;

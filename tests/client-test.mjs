@@ -13,9 +13,11 @@ const describeCalls = [];
 const resolvedNamespaces = [];
 
 let factory;
+let moduleId;
 globalThis.window = {
   __ModuleLoader__: {
     load: (spec) => {
+      moduleId = spec.id;
       factory = spec.factory;
     },
   },
@@ -29,6 +31,11 @@ globalThis.document = {
 
 await import('../client.js');
 assert.equal(typeof factory, 'function', 'client module registered its factory');
+
+// The browser module id must equal the installed package name, or the client
+// module graph cannot resolve the entry (import failed / duplicate factory).
+const pkg = JSON.parse(await (await import('node:fs/promises')).readFile(new URL('../package.json', import.meta.url), 'utf8'));
+assert.equal(moduleId, pkg.name, 'client module id matches package name');
 
 const module = factory((name) => {
   if (name === 'react') return React;

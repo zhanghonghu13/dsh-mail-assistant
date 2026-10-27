@@ -1,10 +1,22 @@
 {
-  "name": "@local/dsh-mail-assistant",
-  "version": "1.0.1",
-  "private": true,
+  "name": "@zhanghonghu13/dsh-mail-assistant",
+  "version": "1.0.2",
   "type": "module",
   "license": "MIT",
-  "description": "Mail Assistant: sidebar entry, Settings page for mailbox credentials, and agent tools to list, read, and save mail, draft and send messages.",
+  "description": "Mail Assistant for DeepSeek Harness: a sidebar entry, a Settings page for mailbox credentials, and agent tools to list, read, and save mail, draft and send messages with approval.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhanghonghu13/dsh-mail-assistant.git"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "plugin",
+    "mail",
+    "email",
+    "imap",
+    "smtp"
+  ],
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",
@@ -19,6 +31,10 @@
     "locale/*.json",
     "icon.svg"
   ],
+  "dependencies": {
+    "@deepseek-ai/cosmokit": "^1.8.6",
+    "@deepseek-ai/schemastery": "^3.18.5"
+  },
   "dsh": {
     "bundle": { "patch": "./cordis.patch.yml" },
     "client": {

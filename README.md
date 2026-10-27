@@ -28,6 +28,8 @@ git clone https://github.com/zhanghonghu13/dsh-mail-assistant
 
 源码目录内已自带 `node_modules/@deepseek-ai/` 下的两个运行时依赖（MIT，保留其 LICENSE），因此源码安装无需联网拉依赖。
 
+> **npm 版与源码版二选一**：两者包名相同（`@zhanghonghu13/dsh-mail-assistant`），同时安装会产生重复的 Loader 行与重复的客户端模块注册，导致启动失败。切换前请先移除已安装的那个。
+
 安装后刷新页面：左侧栏出现「邮件助手」，设置里出现「邮件助手」页。
 
 ## 配置

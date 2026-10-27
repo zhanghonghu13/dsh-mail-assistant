@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "license": "MIT",
   "description": "Mail Assistant: sidebar entry, Settings page for mailbox credentials, and agent tools to list, read, and save mail, draft and send messages.",
   "exports": {
     ".": "./index.js",

@@ -93,4 +93,4 @@ npm install react@18 react-dom@18
 
 ## 许可
 
-本仓库未声明开源许可证。自带依赖 `@deepseek-ai/schemastery` 与 `@deepseek-ai/cosmokit` 为 MIT 许可，其 LICENSE 文件随包附带。
+以 [MIT License](LICENSE) 开源。自带依赖 `@deepseek-ai/schemastery` 与 `@deepseek-ai/cosmokit` 同为 MIT 许可，其 LICENSE 文件随包附带。

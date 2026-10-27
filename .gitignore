@@ -1,0 +1,5 @@
+# Keep the vendored runtime deps (schemastery/cosmokit): they are required at runtime.
+.DS_Store
+Thumbs.db
+*.log
+node_modules/.package-lock.json

@@ -1,0 +1,3 @@
+- insert:
+    - id: mail-assistant
+      name: '@local/dsh-mail-assistant'

@@ -46,6 +46,8 @@ git clone https://github.com/zhanghonghu13/dsh-mail-assistant
 
 常见服务商端口会自动推断：IMAP 993（SSL），SMTP 465（SSL）或 587（STARTTLS）。
 
+> 网易系邮箱（163 / 126 / yeah.net）登录后要求客户端按 RFC 2971 声明身份，插件会自动发送 `ID` 命令。缺少这一步时服务器会在选信箱阶段返回 `NO SELECT Unsafe Login`，与授权码是否正确无关。
+
 ## 智能体工具
 
 | 工具 | 作用 |
@@ -92,6 +94,7 @@ mail-assistant/
 ```bash
 node tests/mime-test.mjs          # MIME 解析/构造往返
 node tests/imap-parser-test.mjs   # IMAP 响应解析（字面量、RFC2047、多字面量）
+node tests/imap-id-test.mjs       # RFC 2971 ID 握手（网易邮箱 Unsafe Login 回归）
 node tests/apply-test.mjs         # Host 工具注册、审批闸门、schema 校验
 node tests/client-test.mjs        # 客户端注册 + 真实 React 渲染（需 react/react-dom）
 ```

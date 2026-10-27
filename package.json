@@ -1,6 +1,6 @@
 {
   "name": "@zhanghonghu13/dsh-mail-assistant",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "license": "MIT",
   "description": "Mail Assistant for DeepSeek Harness: a sidebar entry, a Settings page for mailbox credentials, and agent tools to list, read, and save mail, draft and send messages with approval.",

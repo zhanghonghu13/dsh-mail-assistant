@@ -10,16 +10,25 @@
 
 ## 安装
 
-插件以本地 bundle 的形式安装（当前目录即 bundle 包）：
+### 从 npm 安装（推荐）
 
 ```bash
-# 在 DSH 会话里让智能体执行，或使用 DSH 插件管理界面：
-#   plugin_manager action=install_bundle target=<本仓库绝对路径>
+# 在 DSH 插件管理界面搜索安装，或：
+plugin_manager action=install_bundle target=@zhanghonghu13/dsh-mail-assistant
 ```
 
-安装后刷新页面：左侧栏出现「邮件助手」，设置里出现「邮件助手」页。
+依赖 `@deepseek-ai/schemastery` 与 `@deepseek-ai/cosmokit` 会自动安装。
 
-> 依赖说明：本包在 `node_modules/@deepseek-ai/` 内自带 `schemastery` 3.18.5 与 `cosmokit` 1.8.6（均为 MIT 许可的 DeepSeek Harness 组件，保留其 LICENSE 文件），因此安装时无需联网拉取依赖。
+### 从源码安装
+
+```bash
+git clone https://github.com/zhanghonghu13/dsh-mail-assistant
+# 把克隆目录的绝对路径交给 plugin_manager install_bundle
+```
+
+源码目录内已自带 `node_modules/@deepseek-ai/` 下的两个运行时依赖（MIT，保留其 LICENSE），因此源码安装无需联网拉依赖。
+
+安装后刷新页面：左侧栏出现「邮件助手」，设置里出现「邮件助手」页。
 
 ## 配置
 

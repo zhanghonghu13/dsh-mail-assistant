@@ -107,6 +107,19 @@ await assert.rejects(
   /设置 → 邮件助手/,
 );
 
+// --- 5b. Volatile config refs are read through get(): a configured address
+//     reaches the credential check instead of looking unconfigured.
+const unsetCredentials = {
+  ...mockCtx,
+  credentials: { resolve: async () => undefined },
+};
+apply(unsetCredentials, new Config({ email: 'me@qq.com' }));
+const configuredList = [...registered].reverse().find((tool) => tool.name === 'mail_list');
+await assert.rejects(
+  () => configuredList.execute({}, { signal: new AbortController().signal }),
+  /专用密码/,
+);
+
 // --- 6. Config schema exposes every settings field as volatile (Settings forms only show volatile fields).
 for (const field of ['email', 'senderName', 'imapHost', 'imapPort', 'smtpHost', 'smtpPort', 'downloadDir']) {
   assert.ok(Object.hasOwn(Config.dict ?? {}, field) || true, `field ${field}`);

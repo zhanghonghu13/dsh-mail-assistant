@@ -41,6 +41,20 @@ function requireString(value) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
+/**
+ * Read one resolved config field.
+ * schemastery `.volatile()` fields resolve to a ref object with `get()`, not a
+ * plain value, so settings edits stay live without remounting the plugin.
+ */
+function configValue(config, field, fallback) {
+  const raw = config?.[field];
+  if (raw !== null && typeof raw === 'object' && typeof raw.get === 'function') {
+    const value = raw.get();
+    return value === undefined ? fallback : value;
+  }
+  return raw === undefined ? fallback : raw;
+}
+
 /** Format one address list for display. */
 function formatAddresses(list) {
   return (list ?? [])
@@ -55,7 +69,7 @@ export function apply(ctx, config) {
   });
 
   async function resolveAccount() {
-    const email = requireString(config.email);
+    const email = requireString(configValue(config, 'email', ''));
     if (!email || !email.includes('@')) {
       throw new Error('邮件助手尚未配置：请打开「设置 → 邮件助手」，填写邮箱地址并保存专用密码。');
     }
@@ -65,8 +79,8 @@ export function apply(ctx, config) {
       throw new Error('邮件助手的专用密码尚未保存：请打开「设置 → 邮件助手」填写并保存。');
     }
     const preset = providerPreset(email);
-    const imapHost = requireString(config.imapHost) || preset?.imapHost;
-    const smtpHost = requireString(config.smtpHost) || preset?.smtpHost;
+    const imapHost = requireString(configValue(config, 'imapHost', '')) || preset?.imapHost;
+    const smtpHost = requireString(configValue(config, 'smtpHost', '')) || preset?.smtpHost;
     if (!imapHost) {
       throw new Error('无法识别该邮箱的 IMAP 服务器，请在「设置 → 邮件助手」中手动填写 IMAP 服务器地址。');
     }
@@ -77,11 +91,11 @@ export function apply(ctx, config) {
       email,
       password,
       imapHost,
-      imapPort: clampInt(config.imapPort, preset?.imapPort ?? 993, 1, 65535),
+      imapPort: clampInt(configValue(config, 'imapPort', 0), preset?.imapPort ?? 993, 1, 65535),
       smtpHost,
-      smtpPort: clampInt(config.smtpPort, preset?.smtpPort ?? 465, 1, 65535),
-      senderName: requireString(config.senderName),
-      downloadDir: requireString(config.downloadDir),
+      smtpPort: clampInt(configValue(config, 'smtpPort', 0), preset?.smtpPort ?? 465, 1, 65535),
+      senderName: requireString(configValue(config, 'senderName', '')),
+      downloadDir: requireString(configValue(config, 'downloadDir', '')),
     };
   }
 
@@ -587,7 +601,7 @@ export function apply(ctx, config) {
     order: 2450,
     text: ({ scope }) => {
       if (ctx.tools.get('mail_list', scope) === undefined) return '';
-      const email = requireString(config.email);
+      const email = requireString(configValue(config, 'email', ''));
       if (!email) {
         return '邮件助手已安装但未配置：涉及收发邮件时，引导用户在「设置 → 邮件助手」填写邮箱地址并保存专用密码（QQ/163 等邮箱需使用授权码）。';
       }

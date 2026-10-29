@@ -1,4 +1,5 @@
-# Keep the vendored runtime deps (schemastery/cosmokit): they are required at runtime.
+# Existing vendored runtime files remain tracked; ignore newly installed dependencies.
+node_modules/
 .DS_Store
 Thumbs.db
 *.log

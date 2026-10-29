@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "Mail Assistant",
-    "description": "Configure your mailbox in Settings → Mail Assistant; the agent can then list and read mail, save attachments, draft and send messages."
+    "description": "After configuring mailboxes, the home shows local and AI briefs, pending items and suggested replies; open the mail view to search, read and save attachments, or use the draft box to create, edit and save drafts. Sending still asks for your confirmation."
   }
 }

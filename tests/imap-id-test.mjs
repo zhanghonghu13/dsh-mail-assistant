@@ -21,7 +21,7 @@ const cert = fs.readFileSync(path.join(certDir, 'localhost-cert.pem'));
  * until the client sends ID (unless requireId is disabled).
  */
 function startServer({ requireId = true, rejectId = false } = {}) {
-  const state = { sawId: false, requireId, rejectId };
+  const state = { sawId: false, requireId, rejectId, commands: [] };
   const server = tls.createServer({ key, cert }, (socket) => {
     socket.write('* OK IMAP4rev1 Server ready\r\n');
     let buffer = '';
@@ -34,7 +34,11 @@ function startServer({ requireId = true, rejectId = false } = {}) {
         const match = /^(\S+)\s+(\S+)(?:\s+(.*))?$/.exec(line);
         if (!match) continue;
         const [, tag, command] = match;
-        if (/^LOGIN$/i.test(command)) {
+        state.commands.push(line);
+        if (/^UID$/i.test(command) && /^FETCH /i.test(match[3] ?? '')) {
+          socket.write('* 10 EXISTS\r\n* 2 FETCH (UID 99 FLAGS (\\Seen) RFC822.SIZE 10 ENVELOPE ("date" "subject" NIL NIL NIL NIL NIL NIL NIL NIL))\r\n');
+          socket.write(`${tag} OK FETCH completed\r\n`);
+        } else if (/^LOGIN$/i.test(command)) {
           socket.write(`${tag} OK LOGIN completed\r\n`);
         } else if (/^ID$/i.test(command)) {
           if (rejectId) {
@@ -89,6 +93,11 @@ async function connectTo(port) {
   assert.equal(state.sawId, true, 'ID must be sent right after LOGIN');
   const mailbox = await client.select('INBOX');
   assert.equal(mailbox.exists, 2);
+  const results = await client.fetchEnvelopes('99', { byUid: true });
+  assert.equal(results.length, 1);
+  assert.equal(results[0].uid, 99);
+  assert.ok(state.commands.some(line => / UID FETCH 99 /.test(line)));
+  await assert.rejects(() => client.select('INBOX\r\nA999 LOGOUT'), /非法控制字符/);
   await client.logout();
   server.close();
   console.log('ok 1 - ID is sent after LOGIN and unlocks SELECT');
